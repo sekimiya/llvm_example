@@ -50,10 +50,18 @@ static int gettok(){
                     do{
                         NumStr += LastChar; 
                         LastChar = getchar();
-                    }
-                    while(isdigit(LastChar) || LastChar == '.' );
+                    }while(isdigit(LastChar) || LastChar == '.' );
+                    
                     NumVal = strtod(NumStr.c_str(), 0);
                     return tok_number;
+                }
+                //コメントを探す。発見した場合は行末までtokenを無視
+                if (LastChar == '#'){
+                    do LastChar = gettok();
+                    while (LastChar != EOF && LastChar!='\n' && LastChar != '\r');
+                    if (LastChar != EOF){
+                        return gettok();
+                    }
                 }
             }
         }
