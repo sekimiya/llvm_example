@@ -63,6 +63,15 @@ static int gettok(){
                         return gettok();
                     }
                 }
+                //ファイルの終了
+                if (LastChar == EOF){
+                    return tok_eof;
+                }
+                //それ以外の場合は演算子？
+                int ThisChar = LastChar;
+                LastChar = getchar();
+                //ASCIIコードをそのまま返す
+                return ThisChar;
             }
         }
     }
