@@ -23,6 +23,49 @@ enum Token{
 static std::string IdentifierStr;
 static double NumVal;
 
+//すべての式ノードの基底クラス
+class ExprAST{
+    public:
+        virtual ~ExprAST(){}
+};
+
+//数値参照のための式クラス
+class NumberExprAST : public ExprAST{
+    double Val;
+    public:
+        NumberExprAST(double val) : Val(Val){}
+};
+
+//変数参照のための式クラス
+class VariableExprAST : public ExprAST{
+    std::string Name;
+public:
+    VariableExprAST(const std::string &name) : Name(name) {}
+};
+
+//演算子参照のための式クラス
+//opcodeをキャプチャ
+class BinaryExorAST : public ExprAST{
+    char Op;
+    ExprAST *LHS, *RHS;
+public:
+    BinaryExorAST(char op, ExprAST *lhs, ExprAST *rhs) : Op(op), LHS(lhs), RHS(rhs){}
+};
+
+class CallExprAST : public ExprAST {
+    std::string Callee;
+    std::vector<ExprAST*> Args;
+public:
+    CallExprAST(const std::string &callee, std::vector<ExprAST*> &args: Callee(callee), Args(args) {}
+};
+
+
+/*
+字句解析器（lexer）
+コードを1文字ずつ取得、予約語、数値、コメント、演算子の順番で条件判定を行い、
+各Tokenを構造体に返す。
+テキスト（コード）をトークン毎にバラす。
+*/
 static int gettok(){
 
     static int LastChar = ' ';
