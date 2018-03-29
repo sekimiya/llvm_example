@@ -31,6 +31,7 @@ class ExprAST{
 };
 
 //数値参照のための式クラス
+//コピーコンストラクタ
 class NumberExprAST : public ExprAST{
     double Val;
     public:
@@ -53,11 +54,28 @@ public:
     BinaryExorAST(char op, ExprAST *lhs, ExprAST *rhs) : Op(op), LHS(lhs), RHS(rhs){}
 };
 
+//関数呼び出しのための式クラス
 class CallExprAST : public ExprAST {
     std::string Callee;
     std::vector<ExprAST*> Args;
 public:
     CallExprAST(const std::string &callee, std::vector<ExprAST*> &args): Callee(callee), Args(args) {}
+};
+
+//引数名と引数をキャプチャする
+class PrototypeAST{
+    std::string Name;
+    std::vector<std::string> Args;
+public: 
+    PrototypeAST(const std::string &name, const std::vector<std::string> &args): Name(name), Args(args) {}
+};
+
+class FunctionAST{
+    PrototypeAST *Proto;
+    ExprAST *Body;
+
+public:
+    FunctionAST(PrototypeAST *proto, ExprAST *body) : Proto(proto) , Body(body){}
 };
 
 
